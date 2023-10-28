@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 
@@ -82,6 +83,9 @@ class _AddEventPageState extends State<AddEventPage> {
                   });
                 }
             ),
+            SizedBox(
+              height: 5,
+            ),
             DateTimeFormField(
               decoration : const InputDecoration(
                 hintStyle: TextStyle(
@@ -92,17 +96,16 @@ class _AddEventPageState extends State<AddEventPage> {
                 ),
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.event_note),
-                labelText: "Only time"
               ),
               mode : DateTimeFieldPickerMode.time,
               autovalidateMode : AutovalidateMode.always,
               validator : (e) => (e?.day ?? 0) == 1 ?"Please not the first day" : null,
-              onDateSelected = (DateTime value) {
+              onDateSelected: (DateTime value) {
                 setState(() {
                   selectedConfDate = value;
                 });
-              }
-            )
+              },
+            ),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -116,9 +119,17 @@ class _AddEventPageState extends State<AddEventPage> {
                       );
                       FocusScope.of(context).requestFocus(FocusNode());
                       
-                      print("ajout de la conf $confName par le speaker $speakerName");
-                      print("le type de la conférence est $selectedConfType");
-                      print("date de la conf $selectedConfDate");
+                      //print("ajout de la conf $confName par le speaker $speakerName");
+                     //print("le type de la conférence est $selectedConfType");
+                      // print("date de la conf $selectedConfDate");
+                      CollectionReference eventsRef = FirebaseFirestore.instance.collection("Events");
+                      eventsRef.add({
+                        "speaker" : speakerName,
+                        "subject" : confName,
+                        "date" : selectedConfDate,
+                        "avatar" : "lior",
+                        "type" : selectedConfType
+                      });
                     }
                   },
                   child: Text("Envoyer")),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "14976270990",
+    "project_id": "asynconf-tuto-pour-apprflutter",
+    "storage_bucket": "asynconf-tuto-pour-apprflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14976270990:android:31cacc3a4530ba84c77fdf",
+        "android_client_info": {
+          "package_name": "fr.asynconftuto.flutter_projects"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcjgXSqZgBRwx2u0rryEykiY1DhJZt2Qo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

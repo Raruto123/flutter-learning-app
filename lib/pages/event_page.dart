@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 
 class EventPage extends StatefulWidget {
@@ -10,49 +12,53 @@ class EventPage extends StatefulWidget {
 
 class _EventPageState extends State<EventPage> {
 
-  final conferences = [
-  {
-    "speaker" : "Damien",
-    "date" : "13h à 13h30",
-    "subject" : "le code legacy",
-    "avatar" : "damien"
-  },
-  {
-  "speaker" : "Lior",
-  "date" : "09h à 23h30",
-  "subject" : "le code clean",
-  "avatar" : "lior"
-  },
-  {
-  "speaker" : "Defend Intelligence",
-  "date" : "13 à 16h30",
-  "subject" : "le code non expert",
-  "avatar" : "defendintelligence"
-  }
-  ];
-
   @override
   Widget build(BuildContext context) {
     return  Center(
-      child: ListView.builder(
-        itemCount: conferences.length ,
-        itemBuilder: (context, index) {
-          final conference = conferences[index];
-          final avatar = conference["avatar"];
-          final speaker = conference["speaker"];
-          final subject = conference["subject"];
+      child: StreamBuilder(
+        //nous renvoie tous les documents de notre collection Events
+        stream: FirebaseFirestore.instance.collection("Events").snapshots(),
+        //builder nous permet de construire ce qui a été amené de la base de de données
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+          if (snapshot.connectionState == ConnectionState.waiting ) {
+            return CircularProgressIndicator();
+          }
+
+          if (!snapshot.hasData) {
+            return Text("Aucune conférence trouvée");
+          }
+
+          List<dynamic> conferences = [];
+
+          snapshot.data!.docs.forEach((element) {
+            conferences.add(element);
+          });
+
+          return ListView.builder(
+            itemCount: conferences.length ,
+            itemBuilder: (context, index) {
+              final conference = conferences[index];
+              final avatar = conference["avatar"].toString().toLowerCase();
+              final speaker = conference["speaker"];
+              final subject = conference["subject"];
+              final Timestamp timestamp = conference["date"];
+              final String date = DateFormat.yMd().add_jm().format(timestamp.toDate());
 
 
-          return Card(
-            child: ListTile(
-              leading: Image.asset("assets/images/$avatar.jpg"),
-              title: Text("$speaker"),
-              subtitle: Text("$subject"),
-              trailing: Icon(Icons.info_sharp),
-            ),
+              return Card(
+                child: ListTile(
+                  leading: Image.asset("assets/images/$avatar.jpg"),
+                  title: Text("$speaker à $date"),
+                  subtitle: Text("$subject"),
+                  trailing: Icon(Icons.info_sharp),
+                ),
+              );
+            },
           );
+
         },
-      ),
+      )
     );
   }
 }

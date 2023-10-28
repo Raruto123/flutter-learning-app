@@ -15,11 +15,10 @@ class HomePage extends StatelessWidget {
         children: [
           //ou Image.asset("assets/images/(nom de l'image)") pour ce qui est non svg
           SvgPicture.asset("assets/images/5G2hpI4rAa0k6jx0DaAjnr-KwBqdCM-jq64SjgRM5o8.svg",
-            color: Colors.greenAccent,
+            color: Colors.pink,
           ),
           const Text("Asynconf 2022",
             style: TextStyle(
-                backgroundColor: Colors.red,
                 fontSize: 21*2,
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic,

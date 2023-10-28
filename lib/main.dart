@@ -2,9 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_projects/pages/add_event_page.dart';
 import 'package:flutter_projects/pages/event_page.dart';
 import 'package:flutter_projects/pages/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async{
+
   runApp(const MyApp());
+ WidgetsFlutterBinding.ensureInitialized();
+
+ await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+ );
+
+
 }
 //StatelessWidget pour créer du contenu statique (image, vidéo, contenu) lorsqu'il
 //n'y a rien comme interaction
@@ -49,7 +60,7 @@ class _MyAppState extends State<MyApp> {
           onTap: (index) => setCurentIndex(index),
           selectedItemColor: Colors.pink,
           type: BottomNavigationBarType.fixed,
-          iconSize: 21 * 6,
+          iconSize: 21*3,
           elevation: 21 * 2,
           items: const [
             BottomNavigationBarItem(
